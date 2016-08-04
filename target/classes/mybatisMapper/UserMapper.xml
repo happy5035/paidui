@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.GongQi.paidui.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.GongQi.paidui.entity.User" >
+    <id column="id" property="id" jdbcType="OTHER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="pwd" property="pwd" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, pwd, age, address
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Object" >
+    select 
+    <include refid="Base_Column_List" />
+    from sysuser
+    where id = #{id,jdbcType=OTHER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Object" >
+    delete from sysuser
+    where id = #{id,jdbcType=OTHER}
+  </delete>
+  <insert id="insert" parameterType="com.GongQi.paidui.entity.User" >
+    insert into sysuser (id, name, pwd, 
+      age, address)
+    values (#{id,jdbcType=OTHER}, #{name,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, 
+      #{age,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.GongQi.paidui.entity.User" >
+    insert into sysuser
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="pwd != null" >
+        pwd,
+      </if>
+      <if test="age != null" >
+        age,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=OTHER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null" >
+        #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.GongQi.paidui.entity.User" >
+    update sysuser
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null" >
+        pwd = #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=OTHER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.GongQi.paidui.entity.User" >
+    update sysuser
+    set name = #{name,jdbcType=VARCHAR},
+      pwd = #{pwd,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=OTHER}
+  </update>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from sysuser
+    <if test="sortName != null" >
+      order by ${sortName}
+      <if test="sortOrder != null" >
+        ${sortOrder}
+      </if>
+    </if>
+  </select>
+  <select id="findByParams" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from sysuser
+     <where>
+    	<if test="name != null" >
+        and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="pwd != null" >
+       and pwd = #{pwd,jdbcType=VARCHAR}
+      </if>
+      <if test="age != null" >
+       and age = #{age,jdbcType=INTEGER}
+      </if>
+      <if test="address != null" >
+       and address = #{address,jdbcType=VARCHAR}
+      </if>
+    </where>
+    <if test="sortName != null" >
+      order by ${sortName}
+      <if test="sortOrder != null" >
+        ${sortOrder}
+      </if>
+    </if>
+    <if test="pageSize != null and startNum != null" >
+      limit #{pageSize} offset #{startNum}
+    </if>
+  </select>
+  <select id="findByParamsCount" resultType="int" parameterType="map" >
+    select count(*) from sysuser
+    <where>
+    	<if test="name != null" >
+        and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="pwd != null" >
+       and pwd = #{pwd,jdbcType=VARCHAR}
+      </if>
+      <if test="age != null" >
+       and age = #{age,jdbcType=INTEGER}
+      </if>
+      <if test="address != null" >
+       and address = #{address,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <select id="findByKey" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from sysuser
+    <where >
+      <if test="ckey != null and cvalue != null" >
+        and ${ckey} = #{cvalue}
+      </if>
+      <if test="pkey != null and pvalue != null" >
+        and ${pkey} != #{pvalue}
+      </if>
+    </where>
+  </select>
+  <select id="findByKeyCount" resultType="int" parameterType="map" >
+    select count(*) from sysuser
+    <where >
+      <if test="ckey != null and cvalue != null" >
+        and ${ckey} = #{cvalue}
+      </if>
+      <if test="pkey != null and pvalue != null" >
+        and ${pkey} != #{pvalue}
+      </if>
+    </where>
+  </select>
+</mapper>
